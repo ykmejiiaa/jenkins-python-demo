@@ -3,4 +3,4 @@ def add_numbers(a, b):
 
 
 def greet(name):
-    return f"Hello, {name}!"
+    return f"Hello, {name}! Welcome to the CI/CD pipeline."
