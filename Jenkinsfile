@@ -26,7 +26,9 @@ pipeline {
                     curl -sS -X POST https://webexapis.com/v1/messages \
                       -H "Authorization: Bearer $WEBEX_TOKEN" \
                       -H "Content-Type: application/json" \
-                      -d "{\"roomId\":\"$WEBEX_ROOM_ID\",\"text\":\"Jenkins build SUCCESS: ${JOB_NAME} #${BUILD_NUMBER}\"}"
+                      --data-binary @- <<EOF
+{"roomId":"$WEBEX_ROOM_ID","text":"Jenkins build SUCCESS: ${JOB_NAME} #${BUILD_NUMBER}"}
+EOF
                 '''
             }
         }
@@ -40,7 +42,9 @@ pipeline {
                     curl -sS -X POST https://webexapis.com/v1/messages \
                       -H "Authorization: Bearer $WEBEX_TOKEN" \
                       -H "Content-Type: application/json" \
-                      -d "{\"roomId\":\"$WEBEX_ROOM_ID\",\"text\":\"Jenkins build FAILED: ${JOB_NAME} #${BUILD_NUMBER}\"}"
+                      --data-binary @- <<EOF
+{"roomId":"$WEBEX_ROOM_ID","text":"Jenkins build FAILED: ${JOB_NAME} #${BUILD_NUMBER}"}
+EOF
                 '''
             }
         }
