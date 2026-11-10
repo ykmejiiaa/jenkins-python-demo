@@ -15,4 +15,34 @@ pipeline {
             }
         }
     }
+
+    post {
+        success {
+            withCredentials([
+                string(credentialsId: 'webex-token', variable: 'WEBEX_TOKEN'),
+                string(credentialsId: 'webex-room-id', variable: 'WEBEX_ROOM_ID')
+            ]) {
+                sh '''
+                    curl -sS -X POST https://webexapis.com/v1/messages \
+                      -H "Authorization: Bearer $WEBEX_TOKEN" \
+                      -H "Content-Type: application/json" \
+                      -d "{\"roomId\":\"$WEBEX_ROOM_ID\",\"text\":\"Jenkins build SUCCESS: ${JOB_NAME} #${BUILD_NUMBER}\"}"
+                '''
+            }
+        }
+
+        failure {
+            withCredentials([
+                string(credentialsId: 'webex-token', variable: 'WEBEX_TOKEN'),
+                string(credentialsId: 'webex-room-id', variable: 'WEBEX_ROOM_ID')
+            ]) {
+                sh '''
+                    curl -sS -X POST https://webexapis.com/v1/messages \
+                      -H "Authorization: Bearer $WEBEX_TOKEN" \
+                      -H "Content-Type: application/json" \
+                      -d "{\"roomId\":\"$WEBEX_ROOM_ID\",\"text\":\"Jenkins build FAILED: ${JOB_NAME} #${BUILD_NUMBER}\"}"
+                '''
+            }
+        }
+    }
 }
