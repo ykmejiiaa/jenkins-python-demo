@@ -31,5 +31,5 @@ jobs:
       - name: Security Check 2 - Code Security Scan  
         run: |
           echo "🔐 Scanning code for security issues..."
-          bandit -r src/ -ll
+          bandit -r app.py test_app.py
         continue-on-error: true
